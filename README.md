@@ -22,7 +22,7 @@ sudo apt-get install build-essential linux-headers-$(uname -r)
 ## Getting Started
 1. Clone this repository:
 ```bash
-git clone https://github.com/shadowintel/kernel-CTF.git
+git clone https://github.com/0xCD4/kernel-CTF.git
 cd kernel-CTF
 ```
 
@@ -39,4 +39,4 @@ cd level1
 - Kernel exploits can crash your system - use a VM if possible
 
 ## Author
-Created by shadowintel
+Created by 0xCD4

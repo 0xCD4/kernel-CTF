@@ -68,6 +68,6 @@ If successful, you'll see the flag!
 - `Makefile`: For building the module
 
 ## Author
-Created by shadowintel
+Created by 0xCD4
 
 Good luck and happy hacking!
