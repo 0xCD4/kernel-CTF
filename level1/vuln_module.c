@@ -13,18 +13,15 @@ static int is_exploited = 0;
 static ssize_t vuln_write(struct file *file, const char __user *buffer, size_t length, loff_t *offset) {
     char tmp[BUFFER_SIZE];
     
-    // Copy user data without size check - intentionally vulnerable!
     if (copy_from_user(tmp, buffer, length > BUFFER_SIZE ? BUFFER_SIZE : length)) {
         return -EFAULT;
     }
     
-    // Mark as exploited if they wrote more than the buffer size
     if (length > BUFFER_SIZE) {
         is_exploited = 1;
         printk(KERN_INFO "Buffer overflow triggered!\n");
     }
     
-    // Copy to kernel buffer
     memcpy(kernel_buffer, tmp, BUFFER_SIZE);
     return length;
 }
@@ -59,10 +56,8 @@ static const struct proc_ops vuln_fops = {
 static int __init vuln_init(void) {
     struct proc_dir_entry *entry;
     
-    // Clear the buffer
     memset(kernel_buffer, 0, BUFFER_SIZE);
     
-    // Create proc entry
     entry = proc_create(PROC_NAME, 0666, NULL, &vuln_fops);
     if (!entry) {
         return -ENOMEM;
