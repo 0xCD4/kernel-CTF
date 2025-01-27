@@ -19,6 +19,12 @@ sudo apt-get install build-essential linux-headers-$(uname -r)
 - Good starting point for beginners
 - Located in `/level1` directory
 
+### Level 2: Use-After-Free
+- More advanced kernel exploitation
+- Use-After-Free vulnerability in a note-taking system
+- Introduces kernel heap concepts
+- Located in `/level2` directory
+
 ## Getting Started
 1. Clone this repository:
 ```bash
@@ -28,7 +34,7 @@ cd kernel-CTF
 
 2. Choose a challenge level and navigate to its directory:
 ```bash
-cd level1
+cd level1  # or level2
 ```
 
 3. Follow the README.md in each challenge directory for specific instructions.
