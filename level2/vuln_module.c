@@ -29,19 +29,19 @@ static int find_free_slot(void) {
 }
 
 static ssize_t vuln_write(struct file *file, const char __user *buffer, size_t length, loff_t *offset) {
-    char cmd[8];
+    char cmd;
     int note_id;
     int slot;
 
     if (length < 2)
         return -EINVAL;
 
-    if (copy_from_user(cmd, buffer, 1))
+    if (copy_from_user(&cmd, buffer, 1))
         return -EFAULT;
 
-    switch(cmd[0]) {
+    switch(cmd) {
         case 'A': // Add note
-            if (length > NOTE_SIZE)
+            if (length > NOTE_SIZE + 1)
                 return -EINVAL;
 
             slot = find_free_slot();
@@ -52,14 +52,17 @@ static ssize_t vuln_write(struct file *file, const char __user *buffer, size_t l
             if (!notes[slot])
                 return -ENOMEM;
 
+            memset(notes[slot]->content, 0, NOTE_SIZE);
             if (copy_from_user(notes[slot]->content, buffer + 1, length - 1)) {
                 kfree(notes[slot]);
+                notes[slot] = NULL;
                 return -EFAULT;
             }
 
             notes[slot]->id = slot;
             notes[slot]->is_freed = false;
             note_count++;
+            printk(KERN_INFO "Added note %d with content: %s\n", slot, notes[slot]->content);
 
             return length;
 
@@ -70,7 +73,7 @@ static ssize_t vuln_write(struct file *file, const char __user *buffer, size_t l
             if (note_id < 0 || note_id >= MAX_NOTES || !notes[note_id])
                 return -EINVAL;
 
-            // UAF vulnerability: mark as freed but don't clear pointer
+            printk(KERN_INFO "Freeing note %d\n", note_id);
             notes[note_id]->is_freed = true;
             kfree(notes[note_id]);
             note_count--;
@@ -84,10 +87,10 @@ static ssize_t vuln_write(struct file *file, const char __user *buffer, size_t l
             if (note_id < 0 || note_id >= MAX_NOTES || !notes[note_id])
                 return -EINVAL;
 
-            // UAF vulnerability: can read freed notes
-            if (notes[note_id]->content[0] == 'E' && 
-                notes[note_id]->content[1] == 'X' && 
-                notes[note_id]->content[2] == 'P') {
+            printk(KERN_INFO "Reading note %d: %s\n", note_id, notes[note_id]->content);
+            
+            // Check for exploitation marker
+            if (strncmp(notes[note_id]->content, "EXP", 3) == 0) {
                 is_exploited = true;
                 printk(KERN_INFO "Level2: Exploitation successful!\n");
             }
