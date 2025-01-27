@@ -152,5 +152,5 @@ module_init(vuln_init);
 module_exit(vuln_exit);
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("0xCD4");
+MODULE_AUTHOR("shadowintel");
 MODULE_DESCRIPTION("Level 2 - Use After Free Vulnerability");
