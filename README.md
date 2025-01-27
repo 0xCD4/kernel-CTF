@@ -25,6 +25,12 @@ sudo apt-get install build-essential linux-headers-$(uname -r)
 - Introduces kernel heap concepts
 - Located in `/level2` directory
 
+### Level 3: Race Condition
+- Advanced kernel exploitation
+- Multiple race conditions in a counter management system
+- Focuses on parallel execution and timing attacks
+- Located in `/level3` directory
+
 ## Getting Started
 1. Clone this repository:
 ```bash
@@ -34,7 +40,7 @@ cd kernel-CTF
 
 2. Choose a challenge level and navigate to its directory:
 ```bash
-cd level1  # or level2
+cd level1  # or level2, level3
 ```
 
 3. Follow the README.md in each challenge directory for specific instructions.
@@ -45,4 +51,4 @@ cd level1  # or level2
 - Kernel exploits can crash your system - use a VM if possible
 
 ## Author
-Created by 0xCD4
+Created by shadowintel
